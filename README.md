@@ -8,7 +8,7 @@ Binary Bridge is a fast, on-device translator for text, binary, hexadecimal, and
 
 - Detects ordinary text and pasted binary automatically
 - Converts between UTF-8 text, binary, hexadecimal, and decimal byte views
-- Accepts spaces, commas, line breaks, `0b`, and `0x` prefixes
+- Accepts spaces, commas, line breaks, `0b`, and `0x` prefixes (`0x48 0x69` → `Hi`)
 - Explains incomplete or malformed input instead of silently failing
 - Copies any translated view with one tap
 - Processes everything in the browser; input is not uploaded
