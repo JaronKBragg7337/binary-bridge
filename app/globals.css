@@ -76,6 +76,7 @@ button, textarea { font: inherit; }
 .mode-option:hover .mode-pill { background: #68ffbf0f; color: #c8e7db; }
 .mode-option .peer:focus-visible + .mode-pill { outline: 2px solid var(--ring); outline-offset: 2px; }
 .mode-option .peer[data-state="checked"] + .mode-pill { border-color: #68ffbf52; background: #68ffbf1f; color: var(--primary); }
+.mode-hint { margin: .55rem 0 -.2rem; color: #6e9084; font-size: .76rem; line-height: 1.5; }
 
 .editor-wrap, .result-wrap { min-height: 0; flex: 1; }
 .editor-wrap {
@@ -92,6 +93,7 @@ button, textarea { font: inherit; }
   padding: .55rem 1rem; color: #6d8c82; font: .72rem var(--font-mono);
 }
 .editor-footer { justify-content: space-between; }
+.footer-actions { display: inline-flex; flex-wrap: wrap; justify-content: flex-end; gap: .85rem; }
 .example-button { border: 0; background: transparent; color: #91c7b4; font: inherit; cursor: pointer; }
 .example-button:hover, .example-button:focus-visible { color: var(--primary); }
 
@@ -150,5 +152,6 @@ footer code { color: #99c8b7; font-family: var(--font-mono); }
   .format-tab { gap: 0; font-size: 0; } .format-tab svg { width: 1.05rem; height: 1.05rem; }
   .signal-editor, .signal-result, .error-state { min-height: 245px; }
   .editor-footer { align-items: flex-start; flex-direction: column; gap: .25rem; }
+  .footer-actions { justify-content: flex-start; gap: .7rem; }
 }
 @media (prefers-reduced-motion: reduce) { .rail-node svg { animation: none; } }
