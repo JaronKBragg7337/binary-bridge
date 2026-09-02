@@ -50,8 +50,20 @@ function parseDecimal(input: string) {
 }
 
 function detect(input: string): Exclude<InputMode, "auto"> {
-  const clean = input.replace(/0b/gi, "").replace(/[\s,_-]+/g, "");
-  return clean.length >= 8 && clean.length % 8 === 0 && /^[01]+$/.test(clean) ? "binary" : "text";
+  const trimmed = input.trim();
+  const clean = trimmed.replace(/[\s,_-]+/g, "");
+  const binary = clean.replace(/0b/gi, "");
+
+  if (binary.length >= 8 && binary.length % 8 === 0 && /^[01]+$/.test(binary)) return "binary";
+
+  // A 0x prefix is an unambiguous signal that the user pasted hexadecimal.
+  if (/0x/i.test(trimmed)) return "hex";
+
+  // Hex strings containing A–F can be recognized without a prefix. Numeric-only
+  // strings stay text in Auto mode because they are ambiguous with decimal bytes.
+  if (/^[0-9a-f]+$/i.test(clean) && /[a-f]/i.test(clean) && clean.length % 2 === 0) return "hex";
+
+  return "text";
 }
 
 function convert(input: string, requested: InputMode) {
@@ -94,6 +106,12 @@ export default function Home() {
     setOutputMode("text");
   }
 
+  function loadHexExample() {
+    setInput("0x48 0x65 0x78 0x20 0x42 0x72 0x69 0x64 0x67 0x65");
+    setInputMode("auto");
+    setOutputMode("text");
+  }
+
   return (
     <main className="signal-grid min-h-screen overflow-hidden px-4 py-5 text-foreground sm:px-6 sm:py-8 lg:px-8">
       <div className="mx-auto max-w-[1480px]">
@@ -124,13 +142,21 @@ export default function Home() {
                 </label>
               ))}
             </RadioGroup>
+            <p className="mode-hint">
+              {inputMode === "hex"
+                ? "Hex accepts 0x48 0x69, 48 69, or 4869."
+                : "Auto detects binary, 0x hex, and ordinary text."}
+            </p>
             <div className="editor-wrap">
               <Textarea value={input} onChange={(e) => setInput(e.target.value)} spellCheck={false}
                 aria-label="Content to translate" placeholder="Type text or paste binary here…"
                 className="signal-editor" />
               <div className="editor-footer">
                 <span>{result.data && inputMode === "auto" ? `Detected: ${result.data.mode}` : `${input.length.toLocaleString()} characters`}</span>
-                <button type="button" onClick={loadExample} className="example-button">Load the AWS example</button>
+                <span className="footer-actions">
+                  <button type="button" onClick={loadExample} className="example-button">Load the AWS example</button>
+                  <button type="button" onClick={loadHexExample} className="example-button">Try 0x hex</button>
+                </span>
               </div>
             </div>
           </div>
